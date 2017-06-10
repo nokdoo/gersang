@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+var mon1 = {
+		name : "유령해적선장",
+		shield : 160,
+		hp : 3000
+	};
+	
+var mon2 = {
+		name : "이무기",
+		shield : 180,
+		hp : 6000
+	};
+	
+var mon3 = {
+		name : "거대수",
+		shield : 125,
+		hp : 3000
+	};
+	
+var mon4 = {
+		name : "유령해적선장",
+		shield : 160,
+		hp : 3000
+	};
+	
+var mon5 = {
+		name : "유령해적선장",
+		shield : 160,
+		hp : 3000
+	};
+	
+var mon6 = {
+		name : "유령해적선장",
+		shield : 160,
+		hp : 3000
+	};
+	
+var mon7 = {
+		name : "유령해적선장",
+		shield : 160,
+		hp : 3000
+	};
+	
+var mon8 = {
+		name : "유령해적선장",
+		shield : 160,
+		hp : 3000
+	};
+	
+var mon9 = {
+		name : "야만창병",
+		shield : 130,
+		hp : 3400
+	};
+	
+	function insertMon(e){
+		val = e.value;
+		
+		switch (val) {
+		case "1":
+			form.shield.value = mon1.shield;
+			calPoD(mon1.shield);
+			break;
+			
+		case "2":
+			form.shield.value = mon2.shield;
+			calPoD(mon2.shield);
+			break;
+		
+		case "3":
+			form.shield.value = mon3.shield;
+			calPoD(mon3.shield);
+			break;
+
+		case "9":
+			form.shield.value = mon9.shield;
+			calPoD(mon9.shield);
+			break;
+		}
+		
+	}
+	
+	function calPoD(val){
+		form.PoD.value = parseFloat(100-(val*0.16+57)).toFixed(3);
+		calResult();
+	}
+	
+	var form;
+	var baseStr = 0;
+	function init(){
+		form = document.info;
+		setBaseStr();
+		
+		calAttack();
+	}
+	
+	function setBaseStr(){
+		baseStr = 
+			parseInt(form.helm.value)+
+			parseInt(form.armor.value)+
+			parseInt(form.gloves.value)+
+			parseInt(form.boots.value)+
+			parseInt(form.belt.value)+
+			parseInt(form.ring1.value)+
+			parseInt(form.ring2.value)+
+			parseInt(form.weapon.value)+
+			parseInt(form.base.value);
+		calRemainStat();
+	}
+	
+	function calAttack(){
+		var attack = parseFloat(parseFloat(form.baseAttack.value) + parseFloat(form.str.value*0.4) + parseFloat(form.lv.value*0.6));
+		form.attack.value = Math.floor(attack);
+		calMagicArrow();
+	}
+	
+	function calMagicArrow(){
+		var magicArrow = (parseFloat(form.lv.value)+parseFloat(form.attack.value)+parseFloat(form.clothes.value))*10;
+		form.magicArrow.value = magicArrow;
+		calResult();
+	}
+	
+	function calResult(){
+		var resultBase;
+		
+		resultBase = parseFloat(parseFloat(form.PoD.value) * parseFloat(form.magicArrow.value) / 100);
+		document.getElementById("resultBase").innerHTML = Math.floor(resultBase);
+	
+	}
+	
+	function calRemainStat(){
+		form.remainStat.value = 1306 + parseInt(baseStr) - parseInt(form.str.value);
+	}
+</script>
+<body onload="init()">
+<form name="info" onsubmit="return false;">
+기궁레벨 : <input type="text" onfocus="this.select()" onchange="calAttack()" name="lv" value="200"><br>
+기궁힘 : <input type="text" onfocus="this.select()" value="1488" onchange="calAttack(); calRemainStat();" name="str"><br>
+남는스텟 : <input type="text" onfocus="this.select()" name="remainStat"><br> 
+<input type="hidden" value="52" name="baseAttack">
+공격력수치<input type="text" name="attack" onchange="calMagicArrow()">
+<input type="radio" name="clothes" checked="checked" onchange="calMagicArrow()" value="0">일반&nbsp;&nbsp;
+<input type="radio" name="clothes" onchange="calMagicArrow()" value="10">유카타&nbsp;&nbsp;
+<input type="radio" name="clothes" onchange="calMagicArrow()" value="90">바람면복&nbsp;&nbsp;
+<input type="radio" name="clothes" onchange="calMagicArrow()" value="95">바람댁천&nbsp;&nbsp;<br>
+마불데미지 : <input type="text" onfocus="this.select()" name="magicArrow" readonly="readonly"><br>
+<select onchange="insertMon(this)">
+	<option label="-몬스터-"/>
+	<option label="유령해적선장" value="1"/>
+	<option label="이무기" value="2"/>
+	<option label="거대수" value="3"/>
+	<option label="문지기" value="4"/>
+	<option label="저승사자" value="5"/>
+	<option label="염라대왕" value="6"/>
+	<option label="아우타" value="7"/>
+	<option label="아마쿠사" value="8"/>
+	<option label="야만창병" value="9"/>
+</select> <br>
+몹타저 : <input type="text" onfocus="this.select()" onchange="calPoD(this.value)" name="shield"><br>
+몹피해감소 : <input type="text" onchange="calResult()" name="PoD"><br>
+몬스터 체력 : <input type="text" name="hp"><br>
+
+ 
+	기본<p style="color: red;" id="resultBase"></p>
+	바람면복<p style="color: red;" id="resultMyen"></p>
+	바람댁천<p style="color: red;" id="resultBlack"></p> 
+
+<br>
+힘 증가
+투구 : <input type="text" onfocus="this.select()" value=10 onchange="setBaseStr()" name="helm"><br>
+갑옷 : <input type="text" onfocus="this.select()" value=10 onchange="setBaseStr()" name="armor"><br>
+무기 : <input type="text" onfocus="this.select()" value=5 onchange="setBaseStr()" name="weapon"><br>
+장갑 : <input type="text" onfocus="this.select()" value=100 onchange="setBaseStr()" name="gloves"><br>
+신발 : <input type="text" onfocus="this.select()" value=100 onchange="setBaseStr()" name="boots"><br>
+요대 : <input type="text" onfocus="this.select()" value=100 onchange="setBaseStr()" name="belt"><br>
+반지(왼) : <input type="text" onfocus="this.select()" value=0 onchange="setBaseStr()" name="ring1"><br>
+반지(오) : <input type="text" onfocus="this.select()" value=0 onchange="setBaseStr()" name="ring2"><br>
+기본 : 18<input type="hidden" onfocus="this.select()" value="18" onchange="setBaseStr()" name="base"><br>
+</form>
+
+</body>
+</html>
